@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from sutils import relative_time_to_epoch
 
 def parse_village(html_content):
     """
@@ -38,7 +39,7 @@ def parse_village(html_content):
             
             # Last activity time is in the last span
             last_activity_span = link_element.select_one('span.ml-auto.mr-2')
-            last_activity = last_activity_span.get_text(strip=True).replace(' ', '') if last_activity_span else None
+            last_activity = relative_time_to_epoch(last_activity_span.get_text(strip=True).replace(' ', '')) if last_activity_span else None
 
             topic_info = {
                 'title': title,

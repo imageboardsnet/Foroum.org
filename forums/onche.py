@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from sutils import relative_time_to_epoch
 
 def parse_onche(html_content):
     """
@@ -30,7 +31,7 @@ def parse_onche(html_content):
 
         # Last activity
         right_tag = topic_div.select_one('a.right span')
-        last_activity = right_tag.get_text(strip=True) if right_tag else None
+        last_activity = relative_time_to_epoch(right_tag.get_text(strip=True)) if right_tag else None
 
         # Skip specific titles
         if title in ["Topic de la modération", "[À LIRE] Règles du forum"]:

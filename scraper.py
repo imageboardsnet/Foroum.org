@@ -98,6 +98,13 @@ def scrape_site(site_key, site_config):
             )
             db.session.add(new_topic)
         else:
+            # Update existing topic if needed
+            existing_topic.title = topic['title']
+            existing_topic.username = topic['username']
+            existing_topic.replies = int(topic['replies'])
+            existing_topic.last_activity = topic['last_activity']
+            existing_topic.timestamp = datetime.now(timezone.utc)
+            db.session.add(existing_topic)
             print(f"[DEBUG] Topic already exists in the database: {topic['topic_url']}")
     db.session.commit()
     print(f"[DEBUG] Finished saving topics for site: {site_key}")
@@ -115,21 +122,12 @@ def scrape_site_with_selenium(site_key, site_config):
     # Configure Selenium WebDriver for containerized environment
     chrome_options = Options()
 
-    #if site_key != '2scures':
-        # Disable JavaScript for jeuxvideo.com
-        #"chrome_options.add_argument("--disable-javascript")
-        #print("[DEBUG] JavaScript disabled")
-
     # Container-specific Chrome options
     chrome_options.binary_location = "/usr/bin/google-chrome"
     #chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--user-data-dir=/root/.config/google-chrome")
     chrome_options.add_argument("--profile-directory=Default")
-    #chrome_options.add_argument("--disable-gpu")
-    #chrome_options.add_argument("--disable-dev-shm-usage")
-    #chrome_options.add_argument("--disable-software-rasterizer")
-    #chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
     # Use the ChromeDriver installed in the container
     service = Service("/usr/local/bin/chromedriver")
@@ -174,6 +172,14 @@ def scrape_site_with_selenium(site_key, site_config):
                 db.session.add(new_topic)
             else:
                 print(f"[DEBUG] Topic already exists in the database: {topic['topic_url']}")
+                # Update existing topic if needed
+                existing_topic.title = topic['title']
+                existing_topic.username = topic['username']
+                existing_topic.replies = int(topic['replies'])
+                existing_topic.last_activity = topic['last_activity']
+                existing_topic.timestamp = datetime.now(timezone.utc)
+                db.session.add(existing_topic)
+
         db.session.commit()
         print(f"[DEBUG] Finished saving topics for site: {site_key}")
 

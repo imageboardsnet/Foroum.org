@@ -3,6 +3,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 from scraper import scrape_site, scrape_site_with_selenium
 from db_manager import db, Topic
+from sutils import epoch_to_relative_time
 import os
 import srender
 
@@ -92,28 +93,6 @@ def create_app():
 
     return app
 
-# Keep the helper functions outside the create_app
-def convert_time_to_seconds(time_str):
-    """Convert time strings like '1s', '1m', '1h', '1d' to seconds for comparison"""
-    if not time_str:
-        return 0
-    
-    unit = time_str[-1]
-    try:
-        value = int(time_str[:-1])
-    except ValueError:
-        return 0
-
-    if unit == 's':
-        return value
-    elif unit == 'm':
-        return value * 60
-    elif unit == 'h':
-        return value * 3600
-    elif unit == 'd':
-        return value * 86400
-    return 0
-
 def get_all_scraped(raw=False):
     """
     Return at least 5 topics per forum/website, then fill the rest with the most replied topics.
@@ -153,7 +132,11 @@ def get_all_scraped(raw=False):
     ]
     
     # Sort the result by last_activity (converting time strings to seconds for comparison)
-    result.sort(key=lambda x: convert_time_to_seconds(x['last_activity']))
+    result.sort(key=lambda x: x['last_activity'], reverse=True)
+
+    # Convert last_activity to relative time
+    for topic in result:
+        topic['last_activity'] = epoch_to_relative_time(topic['last_activity'])
 
     if raw:
         return result  # Return raw data

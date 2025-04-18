@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from sutils import convert_to_relative_time
+from sutils import convert_to_epoch
 
 def parse_jeuxvideo(html_content):
     """
@@ -28,7 +28,7 @@ def parse_jeuxvideo(html_content):
 
         # Last activity
         last_activity_tag = topic.select_one('span.topic-date a')
-        last_activity = convert_to_relative_time(last_activity_tag.get_text(strip=True)) if last_activity_tag else None
+        last_activity = convert_to_epoch(last_activity_tag.get_text(strip=True)) if last_activity_tag else None
 
         if title in ["Modération ultime= pas nous", "Règles du forum"]:
             print(f"[DEBUG] Skipping topic with title: {title}")

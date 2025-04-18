@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from sutils import convert_to_relative_time
+from sutils import convert_to_epoch
 
 def parse_avenoel(html_content):
     """
@@ -36,7 +36,7 @@ def parse_avenoel(html_content):
         last_activity_raw = last_activity_tag.get_text(strip=True) if last_activity_tag else None
 
         # Convert last_activity to relative time (e.g., "43s", "5m", "2h")
-        last_activity = convert_to_relative_time(last_activity_raw)
+        last_activity = convert_to_epoch(last_activity_raw)
 
         if title in ["Topic de modération", "🟣 Discord d'AVN (nouveau lien)"]:
             print(f"[DEBUG] Skipping topic with title: {title}")

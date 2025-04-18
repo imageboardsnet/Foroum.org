@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from sutils import convert_to_relative_time
+from sutils import convert_to_epoch
 
 def parse_2sucres(html_content):
     """
@@ -31,7 +31,7 @@ def parse_2sucres(html_content):
 
         # Last activity
         last_activity_tag = topic_div.select_one('div.topicDernier a')
-        last_activity = convert_to_relative_time(last_activity_tag.get_text(strip=True)) if last_activity_tag else None
+        last_activity = convert_to_epoch(last_activity_tag.get_text(strip=True)) if last_activity_tag else None
 
         if title in ["Les bugs / éléments inconvenants sur 2Sucres", "[OFFICIEL] Bienvenue aux NOUVEAUX ! + TUTO","Secrétariat de 2S (Modération/Administration)","Feuille de route du développement de 2Sucres"]:
             print(f"[DEBUG] Skipping topic with title: {title}")
