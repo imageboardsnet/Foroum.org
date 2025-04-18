@@ -76,8 +76,8 @@ def get_all_scraped(raw=False):
     result.sort(key=lambda x: x['last_activity'], reverse=True)
 
     # Convert last_activity to relative time
-    #for topic in result:
-    #    topic['last_activity'] = epoch_to_relative_time(topic['last_activity'])
+    for topic in result:
+        topic['last_activity'] = epoch_to_relative_time(topic['last_activity'])
 
     if raw:
         return result  # Return raw data

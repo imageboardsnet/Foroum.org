@@ -66,8 +66,6 @@ def epoch_to_relative_time(epoch_timestamp):
     Returns:
         str: Relative time format (e.g., "43s", "5m", "2h", "2d") or "Unknown" if conversion fails
     """
-    if not isinstance(epoch_timestamp, (int, float)) or epoch_timestamp < 0:
-        return "Unknown"
 
     try:
         # Convert epoch to datetime
@@ -75,7 +73,12 @@ def epoch_to_relative_time(epoch_timestamp):
         now = datetime.now()
         
         # Calculate time difference
-        delta = now - timestamp_datetime
+        if timestamp_datetime > now:
+            # Handle future timestamps
+            delta = timestamp_datetime - now
+        else:
+            # Handle past timestamps
+            delta = now - timestamp_datetime
 
         # Convert the time difference into a relative format
         if delta.days > 0:
