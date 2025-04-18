@@ -119,7 +119,6 @@ def create_app():
         scheduler = BackgroundScheduler()
         scheduler.add_job(func=scheduled_scrape, trigger='interval', minutes=1)
         scheduler.start()
-        scheduled_scrape()  # Initial scrape
 
     @app.route('/')
     def home():
