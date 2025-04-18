@@ -1,0 +1,10 @@
+main_title = "Foroum.org - La plus grande liste de forums"
+nothing_title = "Aucun Résultat Trouvé"
+search_title = "Rechercher un Forum"
+about_title = "À propos de Foroum.org"
+
+main_description = "La liste la plus complète et mise à jour des forums. Explorez plus de 200 forums sélectionnés avec soin."
+nothing_description = "Oups ! Il semble que nous n'ayons pas trouvé ce que vous cherchiez. Veuillez réessayer ou explorer notre liste de forums sélectionnés."
+search_description = "Recherchez facilement dans notre vaste base de données pour trouver le forum parfait correspondant à vos intérêts."
+about_description = "À propos de nous : Nous sommes dédiés à vous connecter avec le vaste monde des forums. Découvrez comment nous sélectionnons, organisons et mettons à jour notre liste pour qu'elle reste fraîche et pertinente."
+blog_description = "Restez informé des dernières actualités, idées et développements dans la communauté des forums."

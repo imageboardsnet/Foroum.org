@@ -1,0 +1,1 @@
+gunicorn -b 127.0.0.1:6000 "app:create_app()"

@@ -1,0 +1,39 @@
+<div class="ui message about inverted">
+    {% if topics %}
+        <h2>Dernier Topics</h2>
+        <table class="ui celled table inverted compact">
+            <thead>
+                <tr>
+                    <th>Sujet</th>
+                    <th>Auteur</th>
+                    <th>Dernier message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for topic in topics %}
+                    <tr>
+                        <td>
+                            {% if topic['site_key'] == 'onche' %}
+                            <img src="https://onche.org/favicon.ico" alt="{{ topic['site_key'] }}" style="width: 16px; height: 16px;">
+                            {% elif topic['site_key'] == 'avenoel' %}
+                            <img src="https://avenoel.org/favicon.ico" alt="{{ topic['site_key'] }}" style="width: 16px; height: 16px;">
+                            {% elif topic['site_key'] == 'village' %}
+                            <img src="https://village.cx/village.png" alt="{{ topic['site_key'] }}" style="width: 16px; height: 16px;">
+                            {% elif topic['site_key'] == 'jeuxvideo' %}
+                            <img src="https://www.jeuxvideo.com/favicon.png" alt="{{ topic['site_key'] }}" style="width: 16px; height: 16px;">
+                            {% elif topic['site_key'] == '2sucres' %}
+                            <img src="/static/img/2sucres.ico" alt="{{ topic['site_key'] }}" style="width: 16px; height: 16px;">
+                            {% else %}
+                                <i class="question circle outline icon"></i>
+                            {% endif %}
+                                <a href="{{ topic['topic_url'] }}" target="_blank">{{ topic['title'] }} ({{ topic['replies'] }})</a></td>
+                        <td>{{ topic['username'] }}</td>
+                        <td>{{ topic['last_activity'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Pas de topic dispo :(</p>
+    {% endif %}
+</div>
