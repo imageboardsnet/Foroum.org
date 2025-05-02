@@ -1,15 +1,9 @@
 from flask import Flask, jsonify, request, send_from_directory
-from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
-from scraper import scrape_site, scrape_site_with_selenium
 from db_manager import db, Topic
 from sutils import epoch_to_relative_time
 import os
 import srender
-
-# Move global variables outside
-scheduler = None
-scraped_data = {}
 
 SITES_TO_SCRAPE = {
     'onche': {
@@ -83,7 +77,6 @@ def get_all_scraped(raw=False):
         return result  # Return raw data
     return jsonify(result)  # Return JSON response
 
-
 def create_app():
     app = Flask(__name__)
 
@@ -100,25 +93,6 @@ def create_app():
     # Create the database tables
     with app.app_context():
         db.create_all()
-
-    def scheduled_scrape():
-        print("[INFO] Starting scheduled scrape...")
-        with app.app_context():
-            for site_key, site_config in SITES_TO_SCRAPE.items():
-                if site_key in ['jeuxvideo', '2sucres','onche','avenoel']:  # Use Selenium for jeuxvideo and 2sucres
-                    print(f"[INFO] Using Selenium for site: {site_key}")
-                    scrape_site_with_selenium(site_key, site_config)
-                else:
-                    print(f"[INFO] Using scrap for site: {site_key}")
-                    scrape_site(site_key, site_config)
-        print("[INFO] Scraping completed.")
-
-    # Initialize and start scheduler
-    global scheduler
-    if not scheduler:
-        scheduler = BackgroundScheduler()
-        scheduler.add_job(func=scheduled_scrape, trigger='interval', minutes=1)
-        scheduler.start()
 
     @app.route('/')
     def home():
